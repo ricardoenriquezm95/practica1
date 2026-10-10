@@ -21,6 +21,8 @@ public class Product {
 	private String name; 
 	private double price;
 	
+	
+	//esto se debe de eliminar con lombook
 //Constructors, Getters, Setters 
 public Product(Long id, String name, double price) {
 	this.id = id;
@@ -28,5 +30,12 @@ public Product(Long id, String name, double price) {
 	this.price = price;
 }
 
+public Product() {
+	// TODO Auto-generated constructor stub
+}
+
+public Long getId() {
+    return id;
+}
 
 }
