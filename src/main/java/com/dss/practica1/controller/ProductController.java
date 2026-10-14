@@ -3,7 +3,6 @@ package com.dss.practica1.controller;
 import com.dss.practica1.model.Product;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,11 @@ import com.dss.practica1.service.ProductService;
 @RequestMapping("/products")
 public class ProductController {
 	
-	@Autowired
-	private ProductService productService;
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 	
     // Mostrar todos los productos
     @GetMapping
@@ -42,13 +44,7 @@ public class ProductController {
         return "formulario-producto";
     }
     
-    /*
-    //borrar
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-    	return productService.getProductById(id);
-    }*/
-		
+
     //con este metodo anhadimos o modificamos
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute Product producto) {
@@ -56,7 +52,7 @@ public class ProductController {
         return "redirect:/products";
     }
     
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Long id, Model model) {
         try {
             productService.deleteProduct(id);

@@ -1,6 +1,6 @@
 package com.dss.practica1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,17 +9,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dss.practica1.model.Cart;
+
 import com.dss.practica1.model.Product;
 import com.dss.practica1.service.CartService;
-import com.dss.practica1.service.ProductService;
+
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
 	
-	@Autowired
-	private CartService cartService;
+	private final CartService cartService;
+
+    CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
 	
     @GetMapping
     public String viewCart(Model model) {
