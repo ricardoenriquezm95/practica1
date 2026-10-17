@@ -1,36 +1,41 @@
 package com.dss.practica1.controller;
 
-import org.springframework.http.HttpHeaders;
-
+import com.dss.practica1.service.DatabaseExportService;
+import com.dss.practica1.service.ProductService;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.dss.practica1.service.DatabaseExportService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	
-	private final DatabaseExportService databaseExportService;
+    private final DatabaseExportService databaseExportService;
+    private final ProductService productService;
 
-    AdminController(DatabaseExportService databaseExportService) {
+    public AdminController(DatabaseExportService databaseExportService, ProductService productService) {
         this.databaseExportService = databaseExportService;
+        this.productService = productService;
     }
 
-    // Endpoint para descargar  SQL
+    @GetMapping
+    public String adminHome(Model model) {
+        model.addAttribute("products", productService.getAllProducts());
+        return "admin";
+    }
+
     @GetMapping("/export")
     public ResponseEntity<ByteArrayResource> exportDatabase() {
-    	
         byte[] data = databaseExportService.exportDatabaseToSql();
-        
         ByteArrayResource resource = new ByteArrayResource(data);
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=productos.sql")
-        		.contentType(MediaType.APPLICATION_OCTET_STREAM)
-        		.contentLength(data.length).body(resource);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=products.sql")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(data.length)
+                .body(resource);
     }
 }

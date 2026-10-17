@@ -3,9 +3,12 @@ package com.dss.practica1.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Carrito simplificado en memoria (Parte 4 del guion): una lista de Product.
+ */
 public class Cart {
-	
-    private List<Product> cartItems;
+
+    private final List<Product> cartItems;
 
     public Cart() {
         this.cartItems = new ArrayList<>();
@@ -19,7 +22,9 @@ public class Cart {
         cartItems.add(product);
     }
 
-    public void removeProduct(Long productId) {
-        cartItems.removeIf(product -> product.getId().equals(productId));
+    public void removeProduct(int index) {
+        if (index >= 0 && index < cartItems.size()) {
+            cartItems.remove(index);
+        }
     }
 }
